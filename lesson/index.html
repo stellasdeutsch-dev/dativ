@@ -10,13 +10,17 @@
 <link rel="icon" href="../media/logo.webp">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}</style>
 <title>Dativ без зубрёжки</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Onest:wght@300;400;500;600;700&family=Rubik:wght@600;800;900&display=swap">
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MotionPathPlugin.min.js"></script>
+<link rel="preload" href="../assets/fonts/rubik-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/onest-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/bagelfatone-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>@font-face{font-family:'Bagel Fat One';font-style:normal;font-weight:400;font-display:swap;src:url(../assets/fonts/bagelfatone-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Onest';font-style:normal;font-weight:300 700;font-display:swap;src:url(../assets/fonts/onest-cyrillic.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+@font-face{font-family:'Onest';font-style:normal;font-weight:300 700;font-display:swap;src:url(../assets/fonts/onest-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Rubik';font-style:normal;font-weight:800 900;font-display:swap;src:url(../assets/fonts/rubik-cyrillic.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+@font-face{font-family:'Rubik';font-style:normal;font-weight:800 900;font-display:swap;src:url(../assets/fonts/rubik-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+</style>
+<script defer src="../assets/gsap-bundle.min.js"></script>
+
 <style>
 :root{
   color-scheme: light;
@@ -41,12 +45,13 @@ a{color:inherit}
 .ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none;vertical-align:-.14em}
 
 .shade{position:fixed;inset:-10%;pointer-events:none;z-index:0;opacity:.55}
-.shade i{position:absolute;border-radius:50%;background:rgba(40,40,30,.16);filter:blur(38px);animation:sway 14s ease-in-out infinite alternate}
+.shade i{position:absolute;border-radius:50%;background:rgba(40,40,30,.16);filter:blur(38px);will-change:transform}
+@media (min-width:900px) and (hover:hover){.shade i{animation:sway 14s ease-in-out infinite alternate}}
 .shade i:nth-child(1){width:70vw;height:14vw;left:-10vw;top:12vh;transform:rotate(-24deg)}
 .shade i:nth-child(2){width:60vw;height:10vw;right:-12vw;top:48vh;transform:rotate(-32deg);animation-duration:18s}
 .shade i:nth-child(3){width:44vw;height:9vw;left:20vw;top:80vh;transform:rotate(-18deg);animation-duration:16s}
 @keyframes sway{to{translate:4vw 2vh;rotate:6deg}}
-.grain{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;mix-blend-mode:multiply;
+.grain{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.22;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
 .wrap{position:relative;z-index:1;max-width:1180px;margin-inline:auto;padding-inline:var(--gut)}
@@ -103,7 +108,8 @@ section{position:relative;z-index:1;padding-block:56px;scroll-margin-top:58px}
 @keyframes pop{from{opacity:0;transform:translateY(18px) scale(.94)}}
 
 /* top bar */
-.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);background:rgba(228,228,225,.8);border-bottom:1px solid var(--line)}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(228,228,225,.97);border-bottom:1px solid var(--line)}
+@media (min-width:900px){.topbar{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);background:rgba(228,228,225,.8)}}
 .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:58px;gap:12px}
 .brand{display:flex;align-items:center;gap:8px;text-decoration:none}
 .brand img{width:30px;height:30px}
@@ -119,7 +125,13 @@ section{position:relative;z-index:1;padding-block:56px;scroll-margin-top:58px}
 .mark .sun{position:absolute;right:-5%;top:4px;width:min(48%,260px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 40% 35%,#FFF36A,var(--noon) 45%,#FFD400 75%);z-index:0}
 .mark .sun::after{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle at 50% 50%,rgba(255,255,255,.18) 0 2px,transparent 2px 7px);mix-blend-mode:soft-light}
 .word{position:relative;z-index:1;font:400 clamp(96px,33vw,220px)/.82 var(--f-bubble);letter-spacing:-.03em;margin:0;display:flex}
-.word span{display:inline-block}
+.word span{display:inline-block;animation:drop 1s cubic-bezier(.3,1.6,.5,1) both}
+.word span:nth-child(2){animation-delay:.08s}.word span:nth-child(3){animation-delay:.16s}.word span:nth-child(4){animation-delay:.24s}.word span:nth-child(5){animation-delay:.32s}
+@keyframes drop{from{transform:translateY(-.5em) rotate(-12deg) scale(.7)}}
+.mark .sun{animation:sunin 1.2s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes sunin{from{transform:scale(.6) rotate(-50deg)}}
+.sticker .pill{animation:stk .7s .5s cubic-bezier(.3,1.8,.5,1) both}
+@keyframes stk{from{transform:scale(.2) rotate(30deg)}}
 .word span:nth-child(even){translate:0 .05em}
 .mark .b1{position:absolute;z-index:2;width:min(15%,80px);height:auto;right:1%;top:0}
 .sticker{position:absolute;z-index:3;animation:float 5s ease-in-out infinite alternate}
@@ -1312,14 +1324,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
 
 <script>
-(function(){
+function dativInit(){
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var G = window.gsap && window.ScrollTrigger ? window.gsap : null;
   var AD = !!document.getElementById('platform');
   if(G){
     try{ G.registerPlugin(ScrollTrigger); window.SplitText && G.registerPlugin(SplitText); window.DrawSVGPlugin && G.registerPlugin(DrawSVGPlugin); window.MotionPathPlugin && G.registerPlugin(MotionPathPlugin); }catch(e){ G = null; }
   }
-  if(G) document.documentElement.classList.add('gs');
+  if(G){ document.documentElement.classList.add('gs'); ScrollTrigger.config({ignoreMobileResize:true}); }
   var MP = G && window.MotionPathPlugin, DS = G && window.DrawSVGPlugin, ST = G && window.SplitText;
   function $(s,r){ return (r||document).querySelector(s); }
   function $$(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
@@ -1390,9 +1402,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         G.from(hl, {rotation:-14, scale:1.25, duration:.9, ease:'elastic.out(1,.45)', delay:.25, scrollTrigger:{trigger:h, start:'top 88%', once:true}});
       });
     });
-    $$('.rv').forEach(function(el){
-      G.from(el, {y:46, rotation:1.2, duration:.9, ease:'power3.out', scrollTrigger:{trigger:el, start:'top 92%', once:true}});
-    });
+    G.set('.rv', {y:46, rotation:1.2});
+    ScrollTrigger.batch('.rv', {start:'top 94%', once:true, onEnter:function(b){ G.to(b, {y:0, rotation:0, duration:.9, ease:'power3.out', stagger:.08}); }});
     $$('.stg').forEach(function(g){
       G.from(g.children, {y:34, scale:.92, rotation:function(){ return G.utils.random(-5,5); }, duration:.7, ease:'back.out(1.8)', stagger:.07,
         scrollTrigger:{trigger:g, start:'top 88%', once:true}});
@@ -1413,12 +1424,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   /* ---------- GSAP-only extras ---------- */
   if(G && !reduce){
     // hero intro
-    var tl = G.timeline({defaults:{ease:'back.out(2)'}});
-    tl.from('.word span', {y:-140, rotation:function(){ return G.utils.random(-40,40); }, scale:.6, duration:1.1, ease:'elastic.out(1,.5)', stagger:.08})
-      .from('.mark .sun', {scale:.5, rotation:-60, duration:1.2, ease:'elastic.out(1,.6)'}, 0)
-      .from('.mark .b1', {scale:0, rotation:-180, duration:.8}, .35)
-      .from('.sticker', {scale:0, rotation:40, duration:.6, stagger:.12}, .5)
-      .from('.meta > div', {x:-24, duration:.6, stagger:.08, ease:'power3.out'}, .4);
     // sun parallax + spin with scroll
     G.to('.mark .sun', {yPercent:40, rotation:90, ease:'none', scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true}});
     // reading progress
@@ -1767,6 +1772,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   }
 
   /* ---------- videos ---------- */
+  var pio = 'IntersectionObserver' in window ? new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){ var v = en.target; if(v.dataset.poster){ v.poster = v.dataset.poster; } pio.unobserve(v); } }); }, {rootMargin:'900px 0px'}) : null;
+  $$('video.vid').forEach(function(v){ pio ? pio.observe(v) : (v.poster = v.dataset.poster); });
   $$('video.vid').forEach(function(v){
     whenVisible(v, function(){ try{ v.preload='auto'; var p = v.play(); p && p.catch(function(){}); }catch(e){} }, function(){ try{ v.pause(); }catch(e){} });
   });
@@ -1781,7 +1788,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   }
 
   if(G){ window.addEventListener('load', function(){ ScrollTrigger.refresh(); }); if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ ScrollTrigger.refresh(); }); }
-})();
+}
+if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', dativInit); else dativInit();
 </script>
 
 </body>
